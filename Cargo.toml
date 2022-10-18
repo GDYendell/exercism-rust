@@ -3,4 +3,5 @@
 members = [
     "hello-world",
     "lucians-luscious-lasagna",
+    "semi-structured-logs",
 ]
