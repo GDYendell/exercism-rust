@@ -6,24 +6,20 @@ pub enum Comparison {
     Unequal,
 }
 
-pub fn sublist<T: PartialEq>(_first_list: &[T], _second_list: &[T]) -> Comparison {
-    if _first_list == _second_list {
-        return Comparison::Equal;
-    } else if _second_list.len() > _first_list.len() && is_sublist(_first_list, _second_list) {
-        return Comparison::Sublist;
-    } else if _first_list.len() > _second_list.len() && is_sublist(_second_list, _first_list) {
-        return Comparison::Superlist;
+pub fn sublist<T: PartialEq>(a: &[T], b: &[T]) -> Comparison {
+    match (a.len(), b.len()) {
+        (0, 0) => Comparison::Equal,
+        (0, _) => Comparison::Sublist,
+        (_, 0) => Comparison::Superlist,
+        (_, _) if a == b => Comparison::Equal,
+        (_, _) if is_sublist(a, b) => Comparison::Sublist,
+        (_, _) if is_sublist(b, a) => Comparison::Superlist,
+        (_, _) => Comparison::Unequal,
     }
-
-    Comparison::Unequal
 }
 
 fn is_sublist<T: PartialEq>(_sublist: &[T], _list: &[T]) -> bool {
-    for i in 0..(_list.len() - _sublist.len() + 1) {
-        if &_list[i..(i + _sublist.len())] == _sublist {
-            return true;
-        }
-    }
-
-    false
+    _list
+        .windows(_sublist.len())
+        .any(|list_window| list_window == _sublist)
 }

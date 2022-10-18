@@ -18,6 +18,11 @@ fn test_anything_is_a_superlist_of_empty() {
 }
 
 #[test]
+fn test_1_is_1() {
+    assert_eq!(Comparison::Equal, sublist(&[1], &[1]));
+}
+
+#[test]
 fn test_1_is_not_2() {
     assert_eq!(Comparison::Unequal, sublist(&[1], &[2]));
 }
