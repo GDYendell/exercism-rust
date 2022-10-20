@@ -6,4 +6,5 @@ members = [
     "semi-structured-logs",
     "sublist",
     "assembly-line",
+    "health-statistics",
 ]
