@@ -3,7 +3,7 @@ use std::fmt;
 const HOURS_PER_DAY: i32 = 24;
 const MINUTES_PER_HOUR: i32 = 60;
 
-#[derive(Debug)]
+#[derive(Debug, PartialEq, Eq)]
 pub struct Clock {
     hours: i32,
     minutes: i32,
@@ -33,11 +33,5 @@ impl Clock {
 impl fmt::Display for Clock {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         write!(f, "{:02}:{:02}", self.hours, self.minutes)
-    }
-}
-
-impl PartialEq for Clock {
-    fn eq(&self, other: &Self) -> bool {
-        self.hours == other.hours && self.minutes == other.minutes
     }
 }
