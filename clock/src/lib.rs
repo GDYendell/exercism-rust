@@ -1,7 +1,7 @@
 use std::fmt;
 
-const HOURS_PER_DAY: i32 = 24;
-const MINUTES_PER_HOUR: i32 = 60;
+const MINS_PER_HOUR: i32 = 60;
+const MINS_PER_DAY: i32 = MINS_PER_HOUR * 24;
 
 #[derive(Debug, PartialEq, Eq)]
 pub struct Clock {
@@ -10,18 +10,12 @@ pub struct Clock {
 }
 
 impl Clock {
-    pub fn new(new_hours: i32, new_minutes: i32) -> Self {
-        let mut minutes = new_minutes % MINUTES_PER_HOUR;
-        let mut hours = new_hours + new_minutes / MINUTES_PER_HOUR;
-
-        if minutes < 0 {
-            hours -= 1;
-            minutes += 60;
-        }
+    pub fn new(hours: i32, minutes: i32) -> Self {
+        let total_minutes = (minutes + hours * MINS_PER_HOUR).rem_euclid(MINS_PER_DAY);
 
         Clock {
-            hours: hours.rem_euclid(HOURS_PER_DAY),
-            minutes,
+            hours: total_minutes / MINS_PER_HOUR,
+            minutes: total_minutes % MINS_PER_HOUR,
         }
     }
 
