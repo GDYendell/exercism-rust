@@ -7,4 +7,5 @@ members = [
     "sublist",
     "assembly-line",
     "health-statistics",
+    "clock",
 ]
