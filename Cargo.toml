@@ -9,4 +9,5 @@ members = [
     "health-statistics",
     "clock",
     "allergies",
+    "short-fibonacci",
 ]
