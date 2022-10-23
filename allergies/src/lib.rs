@@ -14,20 +14,16 @@ pub enum Allergen {
     Cats,
 }
 
-fn allergen_by_index(index: u32) -> Allergen {
-    use Allergen::*;
-    match index {
-        0 => Eggs,
-        1 => Peanuts,
-        2 => Shellfish,
-        3 => Strawberries,
-        4 => Tomatoes,
-        5 => Chocolate,
-        6 => Pollen,
-        7 => Cats,
-        _ => panic!("Invalid index"),
-    }
-}
+const ALLERGENS: [Allergen; 8] = [
+    Allergen::Eggs,
+    Allergen::Peanuts,
+    Allergen::Shellfish,
+    Allergen::Strawberries,
+    Allergen::Tomatoes,
+    Allergen::Chocolate,
+    Allergen::Pollen,
+    Allergen::Cats,
+];
 
 impl Allergies {
     pub fn new(score: u32) -> Self {
@@ -35,17 +31,13 @@ impl Allergies {
     }
 
     pub fn is_allergic_to(&self, allergen: &Allergen) -> bool {
-        self.score_bit_set(*allergen as u32)
+        (self.score >> *allergen as u32) & 1 == 1
     }
 
     pub fn allergies(&self) -> Vec<Allergen> {
-        (0..=7)
-            .filter(|idx| self.score_bit_set(*idx))
-            .map(allergen_by_index)
+        ALLERGENS
+            .into_iter()
+            .filter(|allergen| self.is_allergic_to(allergen))
             .collect()
-    }
-
-    fn score_bit_set(&self, bit: u32) -> bool {
-        (self.score >> bit) & 1 == 1
     }
 }
