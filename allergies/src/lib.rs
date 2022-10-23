@@ -4,14 +4,14 @@ pub struct Allergies {
 
 #[derive(Debug, PartialEq, Eq, Clone, Copy)]
 pub enum Allergen {
-    Eggs,
-    Peanuts,
-    Shellfish,
-    Strawberries,
-    Tomatoes,
-    Chocolate,
-    Pollen,
-    Cats,
+    Eggs = 1,
+    Peanuts = 2,
+    Shellfish = 4,
+    Strawberries = 8,
+    Tomatoes = 16,
+    Chocolate = 32,
+    Pollen = 64,
+    Cats = 128,
 }
 
 const ALLERGENS: [Allergen; 8] = [
@@ -31,7 +31,7 @@ impl Allergies {
     }
 
     pub fn is_allergic_to(&self, allergen: &Allergen) -> bool {
-        (self.score >> *allergen as u32) & 1 == 1
+        *allergen as u32 & self.score != 0
     }
 
     pub fn allergies(&self) -> Vec<Allergen> {
