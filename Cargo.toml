@@ -10,4 +10,5 @@ members = [
     "clock",
     "allergies",
     "short-fibonacci",
+    "tournament",
 ]
