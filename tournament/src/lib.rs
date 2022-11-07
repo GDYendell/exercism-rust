@@ -1,5 +1,6 @@
 use std::cmp;
 use std::collections::HashMap;
+use std::fmt;
 
 fn format_row(t: &str, m: &str, w: &str, d: &str, l: &str, p: &str) -> String {
     format!(
@@ -40,14 +41,21 @@ impl TeamResult {
     fn points(&self) -> i32 {
         self.wins * 3 + self.draws
     }
-    fn to_string(&self) -> String {
-        format_row(
-            &self.name,
-            &self.played().to_string(),
-            &self.wins.to_string(),
-            &self.draws.to_string(),
-            &self.losses.to_string(),
-            &self.points().to_string(),
+}
+
+impl fmt::Display for TeamResult {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        write!(
+            f,
+            "{}",
+            format_row(
+                &self.name,
+                &self.played().to_string(),
+                &self.wins.to_string(),
+                &self.draws.to_string(),
+                &self.losses.to_string(),
+                &self.points().to_string(),
+            )
         )
     }
 }
