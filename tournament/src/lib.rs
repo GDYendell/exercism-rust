@@ -10,40 +10,44 @@ fn format_row(t: &str, m: &str, w: &str, d: &str, l: &str, p: &str) -> String {
 }
 
 #[derive(Clone, Eq, Debug)]
-struct TeamResult {
+struct Team {
     name: String,
     wins: i32,
     draws: i32,
     losses: i32,
 }
 
-impl TeamResult {
-    fn new(name: &str) -> TeamResult {
-        TeamResult {
+impl Team {
+    fn new(name: &str) -> Team {
+        Team {
             name: name.to_string(),
             wins: 0,
             draws: 0,
             losses: 0,
         }
     }
+
     fn add_win(&mut self) {
         self.wins += 1;
     }
+
     fn add_draw(&mut self) {
         self.draws += 1;
     }
+
     fn add_loss(&mut self) {
         self.losses += 1;
     }
     fn played(&self) -> i32 {
         self.wins + self.draws + self.losses
     }
+
     fn points(&self) -> i32 {
         self.wins * 3 + self.draws
     }
 }
 
-impl fmt::Display for TeamResult {
+impl fmt::Display for Team {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         write!(
             f,
@@ -60,8 +64,8 @@ impl fmt::Display for TeamResult {
     }
 }
 
-impl Ord for TeamResult {
-    fn cmp(&self, other: &TeamResult) -> cmp::Ordering {
+impl Ord for Team {
+    fn cmp(&self, other: &Team) -> cmp::Ordering {
         self.points()
             .cmp(&other.points())
             .reverse() // Higher points come first
@@ -69,33 +73,33 @@ impl Ord for TeamResult {
     }
 }
 
-impl PartialOrd for TeamResult {
-    fn partial_cmp(&self, other: &TeamResult) -> Option<cmp::Ordering> {
+impl PartialOrd for Team {
+    fn partial_cmp(&self, other: &Team) -> Option<cmp::Ordering> {
         Some(self.cmp(other))
     }
 }
 
-impl PartialEq for TeamResult {
-    fn eq(&self, other: &TeamResult) -> bool {
+impl PartialEq for Team {
+    fn eq(&self, other: &Team) -> bool {
         self.points() == other.points()
     }
 }
 
-struct LeagueResult {
-    teams: HashMap<String, TeamResult>,
+struct LeagueTable {
+    teams: HashMap<String, Team>,
 }
 
-impl LeagueResult {
-    fn new() -> LeagueResult {
-        LeagueResult {
+impl LeagueTable {
+    fn new() -> LeagueTable {
+        LeagueTable {
             teams: HashMap::new(),
         }
     }
 
-    fn get_mut_team_result(&mut self, team: &str) -> &mut TeamResult {
+    fn get_mut_team_result(&mut self, team: &str) -> &mut Team {
         self.teams
             .entry(team.to_string())
-            .or_insert_with(|| TeamResult::new(team))
+            .or_insert_with(|| Team::new(team))
     }
 
     fn record_win<'a>(&mut self, winner_name: &'a str, loser_name: &'a str) {
@@ -107,28 +111,28 @@ impl LeagueResult {
         self.get_mut_team_result(team1_name).add_draw();
         self.get_mut_team_result(team2_name).add_draw();
     }
-    fn sorted_teams(&self) -> Vec<&TeamResult> {
-        let mut teams: Vec<&TeamResult> = self.teams.values().to_owned().collect();
+
+    fn rows(&self) -> Vec<String> {
+        let mut teams: Vec<&Team> = self.teams.values().to_owned().collect();
         teams.sort();
-        teams
+        teams.into_iter().map(|team| team.to_string()).collect()
     }
 }
 
 pub fn tally(match_results: &str) -> String {
-    let mut league_result = LeagueResult::new();
+    let mut league_table = LeagueTable::new();
     for result in match_results.split('\n') {
         match result.split(';').collect::<Vec<&str>>()[..] {
-            [winner, loser, "win"] => league_result.record_win(winner, loser),
-            [loser, winner, "loss"] => league_result.record_win(winner, loser),
-            [team1, team2, "draw"] => league_result.record_draw(team1, team2),
+            [winner, loser, "win"] => league_table.record_win(winner, loser),
+            [loser, winner, "loss"] => league_table.record_win(winner, loser),
+            [team1, team2, "draw"] => league_table.record_draw(team1, team2),
             _ => println!("Not implemented"),
         }
     }
 
-    let mut table = format_row("Team", "MP", "W", "D", "L", "P");
-    for team_result in league_result.sorted_teams() {
-        table.push('\n');
-        table.push_str(team_result.to_string().as_str());
-    }
-    table
+    vec![format_row("Team", "MP", "W", "D", "L", "P")] // Table header
+        .into_iter()
+        .chain(league_table.rows().into_iter()) // Table rows
+        .collect::<Vec<String>>()
+        .join("\n")
 }
