@@ -9,7 +9,7 @@ fn format_row(t: &str, m: &str, w: &str, d: &str, l: &str, p: &str) -> String {
     )
 }
 
-#[derive(Clone, Eq)]
+#[derive(Clone, Eq, Debug)]
 struct TeamResult {
     name: String,
     wins: i32,
@@ -60,19 +60,18 @@ impl fmt::Display for TeamResult {
     }
 }
 
-impl PartialOrd for TeamResult {
-    fn partial_cmp(&self, other: &TeamResult) -> Option<cmp::Ordering> {
-        Some(other.cmp(self))
+impl Ord for TeamResult {
+    fn cmp(&self, other: &TeamResult) -> cmp::Ordering {
+        self.points()
+            .cmp(&other.points())
+            .reverse() // Higher points come first
+            .then_with(|| self.name.cmp(&other.name)) // "Higher" letter comes last
     }
 }
 
-impl Ord for TeamResult {
-    fn cmp(&self, other: &TeamResult) -> cmp::Ordering {
-        if self.eq(other) {
-            other.name.cmp(&self.name)
-        } else {
-            self.points().cmp(&other.points())
-        }
+impl PartialOrd for TeamResult {
+    fn partial_cmp(&self, other: &TeamResult) -> Option<cmp::Ordering> {
+        Some(self.cmp(other))
     }
 }
 
