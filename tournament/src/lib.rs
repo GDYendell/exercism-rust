@@ -102,12 +102,12 @@ impl LeagueTable {
             .or_insert_with(|| Team::new(team))
     }
 
-    fn record_win<'a>(&mut self, winner_name: &'a str, loser_name: &'a str) {
+    fn record_win(&mut self, winner_name: &str, loser_name: &str) {
         self.get_mut_team_result(winner_name).add_win();
         self.get_mut_team_result(loser_name).add_loss();
     }
 
-    fn record_draw<'a>(&mut self, team1_name: &'a str, team2_name: &'a str) {
+    fn record_draw(&mut self, team1_name: &str, team2_name: &str) {
         self.get_mut_team_result(team1_name).add_draw();
         self.get_mut_team_result(team2_name).add_draw();
     }
