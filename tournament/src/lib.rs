@@ -84,26 +84,21 @@ impl LeagueResult {
             teams: HashMap::new(),
         }
     }
-    fn add_team(&mut self, team: &str) {
-        if !self.teams.contains_key(team) {
-            self.teams.insert(team.to_string(), TeamResult::new(team));
-        }
+
+    fn get_mut_team_result(&mut self, team: &str) -> &mut TeamResult {
+        self.teams
+            .entry(team.to_string())
+            .or_insert_with(|| TeamResult::new(team))
     }
 
     fn record_win<'a>(&mut self, winner_name: &'a str, loser_name: &'a str) {
-        self.add_team(winner_name);
-        self.add_team(loser_name);
-
-        self.teams.get_mut(winner_name).unwrap().add_win();
-        self.teams.get_mut(loser_name).unwrap().add_loss();
+        self.get_mut_team_result(winner_name).add_win();
+        self.get_mut_team_result(loser_name).add_loss();
     }
 
     fn record_draw<'a>(&mut self, team1_name: &'a str, team2_name: &'a str) {
-        self.add_team(team1_name);
-        self.add_team(team2_name);
-
-        self.teams.get_mut(team1_name).unwrap().add_draw();
-        self.teams.get_mut(team2_name).unwrap().add_draw();
+        self.get_mut_team_result(team1_name).add_draw();
+        self.get_mut_team_result(team2_name).add_draw();
     }
     fn sorted_teams(&self) -> Vec<&TeamResult> {
         let mut teams: Vec<&TeamResult> = self.teams.values().to_owned().collect();
