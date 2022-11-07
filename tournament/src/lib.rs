@@ -27,15 +27,15 @@ impl Team {
         }
     }
 
-    fn add_win(&mut self) {
+    fn record_win(&mut self) {
         self.wins += 1;
     }
 
-    fn add_draw(&mut self) {
+    fn record_draw(&mut self) {
         self.draws += 1;
     }
 
-    fn add_loss(&mut self) {
+    fn record_loss(&mut self) {
         self.losses += 1;
     }
     fn played(&self) -> i32 {
@@ -103,13 +103,13 @@ impl LeagueTable {
     }
 
     fn record_win(&mut self, winner_name: &str, loser_name: &str) {
-        self.get_mut_team_result(winner_name).add_win();
-        self.get_mut_team_result(loser_name).add_loss();
+        self.get_mut_team_result(winner_name).record_win();
+        self.get_mut_team_result(loser_name).record_loss();
     }
 
     fn record_draw(&mut self, team1_name: &str, team2_name: &str) {
-        self.get_mut_team_result(team1_name).add_draw();
-        self.get_mut_team_result(team2_name).add_draw();
+        self.get_mut_team_result(team1_name).record_draw();
+        self.get_mut_team_result(team2_name).record_draw();
     }
 
     fn rows(&self) -> Vec<String> {
