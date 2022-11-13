@@ -6,6 +6,9 @@ pub fn evens<T>(iter: impl Iterator<Item = T>) -> impl Iterator<Item = T> {
     iter.enumerate()
         .filter(|(idx, _)| idx & 1 == 0)
         .map(|(_, val)| val)
+
+    // Helper method does the same:
+    // iter.step_by(2)
 }
 
 pub struct Position(pub i16, pub i16);
