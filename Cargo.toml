@@ -11,4 +11,5 @@ members = [
     "allergies",
     "short-fibonacci",
     "tournament",
+    "low-power-embedded-game",
 ]
