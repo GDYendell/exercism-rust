@@ -12,4 +12,5 @@ members = [
     "short-fibonacci",
     "tournament",
     "low-power-embedded-game",
+    "role-playing-game",
 ]
