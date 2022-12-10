@@ -13,4 +13,5 @@ members = [
     "tournament",
     "low-power-embedded-game",
     "role-playing-game",
+    "magazine-cutout",
 ]
