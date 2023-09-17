@@ -15,4 +15,5 @@ members = [
     "role-playing-game",
     "magazine-cutout",
     "reverse-string",
+    "gigasecond",
 ]
