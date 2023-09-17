@@ -2,6 +2,7 @@
 
 members = [
     "allergies",
+    "armstrong-numbers",
     "assembly-line",
     "clock",
     "gigasecond",
