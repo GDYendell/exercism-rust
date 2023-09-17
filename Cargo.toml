@@ -4,6 +4,7 @@ members = [
     "allergies",
     "armstrong-numbers",
     "assembly-line",
+    "beer-song",
     "clock",
     "gigasecond",
     "health-statistics",
