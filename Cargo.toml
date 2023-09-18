@@ -6,6 +6,7 @@ members = [
     "assembly-line",
     "beer-song",
     "clock",
+    "difference-of-squares",
     "gigasecond",
     "health-statistics",
     "hello-world",
