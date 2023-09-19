@@ -4,6 +4,7 @@ members = [
     "allergies",
     "armstrong-numbers",
     "assembly-line",
+    "binary-search",
     "beer-song",
     "clock",
     "difference-of-squares",
