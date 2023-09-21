@@ -1,13 +1,12 @@
 use std::cmp::Ordering::{Equal, Greater, Less};
 
-pub fn find<A: Ord>(array: &[A], key: A) -> Option<usize> {
-    if array.is_empty() {
+pub fn find<A: AsRef<[V]>, V: Ord>(array: A, key: V) -> Option<usize> {
+    let mut window = array.as_ref();
+    if window.is_empty() {
         return None;
     }
 
-    let mut window = array;
     let mut window_start = 0;
-
     loop {
         let pivot = window.len() / 2;
 
