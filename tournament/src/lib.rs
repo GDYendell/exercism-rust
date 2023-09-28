@@ -132,7 +132,7 @@ pub fn tally(match_results: &str) -> String {
 
     vec![format_row("Team", "MP", "W", "D", "L", "P")] // Table header
         .into_iter()
-        .chain(league_table.rows().into_iter()) // Table rows
+        .chain(league_table.rows()) // Table rows
         .collect::<Vec<String>>()
         .join("\n")
 }
